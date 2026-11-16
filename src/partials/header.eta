@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%= it.description %>">
+    <title><%= it.pageTitle %> · Ashplug</title>
+    <script>
+      (() => {
+        const saved = localStorage.getItem("ashplug-theme");
+        const system = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = saved || system;
+      })();
+    </script>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/site.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/" aria-label="Ashplug home">
+          <img src="/assets/ashplug-navbar.svg" alt="Ashplug" class="h-8 w-auto">
+        </a>
+        <button type="button" class="menu-button rounded border border-[var(--border)] px-3 py-2 text-xs text-[var(--text-muted)] md:hidden" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">
+          menu
+        </button>
+        <div class="site-nav-links hidden items-center gap-6 text-xs md:flex">
+          <a class="nav-link" href="/installation/">installation</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">github ↗</a>
+          <button type="button" class="nav-link" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+            theme: <span data-theme-label>light</span>
+          </button>
+        </div>
+      </nav>
+      <div id="mobile-menu" class="mobile-menu border-b border-[var(--border)] py-4 md:hidden" data-mobile-menu hidden>
+        <div class="flex flex-col gap-4 text-xs">
+          <a class="nav-link" href="/installation/">installation</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">github ↗</a>
+          <button type="button" class="nav-link text-left" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+            theme: <span data-theme-label>light</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>

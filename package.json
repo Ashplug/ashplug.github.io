@@ -1,0 +1,18 @@
+{
+  "name": "ashplug-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/build.mjs && bun run build:css",
+    "build:css": "tailwindcss -c tailwind.config.js -i src/styles/input.css -o docs/assets/site.css --minify",
+    "check": "bun run build",
+    "dev": "bun run dev:all",
+    "dev:all": "bun run build && bun scripts/dev.mjs",
+    "dev:server": "bun dev-server.ts",
+    "dev:watch": "bun --watch --watch-path=src --watch-path=scripts --watch-path=tailwind.config.js scripts/watch.mjs"
+  },
+  "devDependencies": {
+    "eta": "^3.5.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

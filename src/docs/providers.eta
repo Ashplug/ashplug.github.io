@@ -1,0 +1,16 @@
+<p class="eyebrow">documentation / providers</p>
+<h1>AI providers</h1>
+<p class="doc-lede">Providers translate planner requests into text. They do not execute commands, inspect the filesystem, or make safety decisions.</p>
+<h2>OpenAI-compatible</h2>
+<p>Use OpenAI or another service exposing the chat-completions shape. The API key is read at runtime from <code>api_key_env</code>.</p>
+<div class="code-block"><div class="code-header"><span>environment</span><button type="button" data-copy-code="export OPENAI_API_KEY=&quot;…&quot;">copy</button></div><pre><code>export OPENAI_API_KEY="…"</code></pre></div>
+<h2>Ollama</h2>
+<p>Point the provider at a local Ollama server. No authorization header is sent.</p>
+<div class="code-block"><div class="code-header"><span>configuration</span><button type="button" data-copy-code='[ai]\nprovider = "ollama"\nbase_url = "http://localhost:11434"\nmodel = "llama3"'>copy</button></div><pre><code>[ai]
+provider = "ollama"
+base_url = "http://localhost:11434"
+model = "llama3"</code></pre></div>
+<h2>Mock provider</h2>
+<p>The deterministic mock provider is intended for tests, offline experiments, and CI. It fails closed when its response queue is exhausted.</p>
+<div class="code-block"><div class="code-header"><span>offline plan</span><button type="button" data-copy-code='ASHPLUG_MOCK_RESPONSE='{"summary":"List files","steps":[{"description":"List files","command":{"program":"ls","args":["-la"]}}]}' ashplug --provider mock "list files"'>copy</button></div><pre><code>ASHPLUG_MOCK_RESPONSE='{"summary":"List files","steps":[{"description":"List files","command":{"program":"ls","args":["-la"]}}]}' \
+  ashplug --provider mock "list files"</code></pre></div>

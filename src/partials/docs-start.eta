@@ -1,0 +1,15 @@
+      <div class="docs-page">
+        <button type="button" class="docs-mobile-toggle" data-docs-toggle aria-expanded="false" aria-controls="docs-sidebar">contents</button>
+        <aside id="docs-sidebar" class="docs-index docs-sidebar" data-docs-sidebar>
+          <p class="docs-kicker">documentation</p>
+          <a href="/docs/" class="<%= it.current === 'introduction' ? 'current' : '' %>">Introduction</a>
+          <a href="/docs/installation/" class="<%= it.current === 'installation' ? 'current' : '' %>">Installation</a>
+          <a href="/docs/configuration/" class="<%= it.current === 'configuration' ? 'current' : '' %>">Configuration</a>
+          <a href="/docs/commands/" class="<%= it.current === 'commands' ? 'current' : '' %>">Commands</a>
+          <a href="/docs/providers/" class="<%= it.current === 'providers' ? 'current' : '' %>">AI providers</a>
+          <a href="/docs/architecture/" class="<%= it.current === 'architecture' ? 'current' : '' %>">Architecture</a>
+          <a href="/docs/security/" class="<%= it.current === 'security' ? 'current' : '' %>">Security model</a>
+          <a href="/docs/troubleshooting/" class="<%= it.current === 'troubleshooting' ? 'current' : '' %>">Troubleshooting</a>
+        </aside>
+        <article class="doc-article">
+          <p class="breadcrumbs"><a href="/">home</a><span>/</span><a href="/docs/">docs</a><span>/</span><span><%= it.label %></span></p>

@@ -1,0 +1,12 @@
+<p class="eyebrow">documentation / commands</p>
+<h1>CLI commands</h1>
+<p class="doc-lede">The top-level form accepts a task; management subcommands expose planning, configuration, history, and shell integration.</p>
+<div class="code-block"><div class="code-header"><span>common commands</span><button type="button" data-copy-code="ashplug &quot;find large files&quot;\nashplug plan &quot;list files&quot;\nashplug config show\nashplug history list\nashplug init bash">copy</button></div><pre><code>ashplug "find large files"
+ashplug plan "list files"
+ashplug config show
+ashplug history list
+ashplug init bash</code></pre></div>
+<h2>Useful options</h2>
+<div class="doc-table"><div><b>--provider NAME</b><span>Override the configured provider: openai, ollama, or mock.</span></div><div><b>--model MODEL</b><span>Override the model name.</span></div><div><b>--plan</b><span>Produce a plan and show safety decisions without executing.</span></div><div><b>--yes</b><span>Approve every command the policy permits for this invocation.</span></div><div><b>--no-history</b><span>Keep this invocation out of persistent history.</span></div></div>
+<h2>Exit codes</h2>
+<p><code>0</code> indicates success, <code>1</code> runtime/provider/safety failure, <code>2</code> invalid CLI usage, and <code>3</code> an unimplemented feature.</p>

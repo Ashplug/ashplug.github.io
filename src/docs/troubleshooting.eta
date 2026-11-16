@@ -1,0 +1,7 @@
+<p class="eyebrow">documentation / troubleshooting</p>
+<h1>Troubleshooting</h1>
+<p class="doc-lede">Use the diagnostics below to distinguish configuration, provider, policy, and shell integration issues.</p>
+<h2>Provider errors</h2><p>Check <code>ai.provider</code>, the endpoint, model, timeout, and the environment variable named by <code>api_key_env</code>. Use <code>--provider mock</code> to remove network and credential variables from an offline test.</p>
+<h2>Safety denial</h2><p>A denial is expected for unknown, privileged, shell-interpreter, or invalid commands. Review the reason printed with the plan; changing a policy setting lowers the security posture and does not bypass command validation.</p>
+<h2>Shell integration</h2><p>Confirm <code>ashplug</code> is on <code>PATH</code>, source the generated Bash or Zsh script again, and check the shell-specific startup file. The hook returns status 127 when the binary is unavailable and protects against recursion.</p>
+<h2>History</h2><p>History is enabled by default and stored in SQLite. Use <code>--no-history</code> for an invocation that should remain ephemeral, or disable persistence in the <code>[history]</code> section.</p>

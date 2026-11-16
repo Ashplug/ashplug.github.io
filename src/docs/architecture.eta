@@ -1,0 +1,10 @@
+<p class="eyebrow">documentation / architecture</p>
+<h1>Architecture</h1>
+<p class="doc-lede">The request lifecycle is modular: provider and planning concerns are separated from safety, execution, orchestration, and persistence.</p>
+<div class="architecture-flow"><span>shell / CLI</span><i>→</i><span>planner</span><i>→</i><span>safety</span><i>→</i><span>executor</span><i>→</i><span>history</span></div>
+<h2>Command model</h2>
+<p>Commands use an executable name and argument vector. There is no shell-string field, and the executor passes arguments directly to the operating system.</p>
+<h2>Recovery</h2>
+<p>The orchestrator feeds failed step observations back to the planner and retries within the configured iteration bound. Planning and history failures are typed errors; safety denials and user rejections are terminal statuses.</p>
+<h2>Interfaces</h2>
+<p><code>AiProvider</code>, <code>Planner</code>, <code>CommandRunner</code>, <code>Approver</code>, and <code>HistoryStore</code> keep modules independently testable with mock implementations.</p>

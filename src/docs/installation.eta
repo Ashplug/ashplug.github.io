@@ -1,0 +1,19 @@
+<p class="eyebrow">documentation / installation</p>
+<h1>Install Ashplug</h1>
+<p class="doc-lede">Ashplug is distributed as a Rust CLI. Install it from a source checkout, initialize configuration, then choose an AI provider.</p>
+<h2>Prerequisites</h2>
+<ul class="check-list"><li>Rust stable 1.85 or newer and Cargo.</li><li>Bash or Zsh for shell integration.</li><li>An OpenAI-compatible endpoint, local Ollama server, or mock provider.</li></ul>
+<h2>Build from source</h2>
+<div class="code-block"><div class="code-header"><span>terminal</span><button type="button" data-copy-code="git clone https://github.com/XenVen/ashplug.git\ncd ashplug\ncargo install --path .">copy</button></div><pre><code>git clone https://github.com/XenVen/ashplug.git
+cd ashplug
+cargo install --path .</code></pre></div>
+<p class="note"><strong>Repository note:</strong> the project’s installation guide currently uses <code>XenVen/ashplug</code>, while the active Git remote is <code>Ashplug/ashplug</code>. Resolve that identity before publishing a canonical clone command.</p>
+<h2>Initialize and verify</h2>
+<div class="code-block"><div class="code-header"><span>configuration</span><button type="button" data-copy-code="ashplug --version\nashplug config init\nashplug config show">copy</button></div><pre><code>ashplug --version
+ashplug config init
+ashplug config show</code></pre></div>
+<h2>Shell integration</h2>
+<p>Print and source the integration without changing a startup file:</p>
+<div class="code-block"><div class="code-header"><span>bash</span><button type="button" data-copy-code="ashplug init bash > /tmp/ashplug.bash\nsource /tmp/ashplug.bash">copy</button></div><pre><code>ashplug init bash &gt; /tmp/ashplug.bash
+source /tmp/ashplug.bash</code></pre></div>
+<p>For Zsh, replace <code>bash</code> with <code>zsh</code>. Persistent setup uses the corresponding <code>eval "$(ashplug init bash)"</code> line in the shell startup file.</p>

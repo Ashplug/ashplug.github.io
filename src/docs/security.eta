@@ -1,0 +1,9 @@
+<p class="eyebrow">documentation / security</p>
+<h1>Security model</h1>
+<p class="doc-lede">Ashplug reduces the risk of AI-assisted shell work by keeping generated content untrusted and routing every command through a centralized policy.</p>
+<h2>Default policy</h2>
+<div class="doc-table"><div><b>allow</b><span>positively classified read-only commands.</span></div><div><b>approval</b><span>file creation/modification, deletion, and network transfer.</span></div><div><b>deny</b><span>privileged operations, shell interpreters, unknown executables, and invalid commands.</span></div></div>
+<h2>Additional protections</h2>
+<ul class="check-list"><li>Commands must be bare executable names, not paths.</li><li>Protected system and credential paths cannot be written or deleted.</li><li>Symlinks and write boundaries are resolved before policy decisions.</li><li>Timeouts and bounded output capture apply to every command.</li><li>Secrets and authorization headers are excluded from logs.</li></ul>
+<h2>Limitations</h2>
+<p>The safety engine is not an OS sandbox. It cannot model runtime behavior, environment variables, plugins, shared libraries, or races between path checks and execution. Linux Bubblewrap isolation is opt-in and has its own documented limitations.</p>

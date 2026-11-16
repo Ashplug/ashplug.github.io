@@ -1,0 +1,104 @@
+<%~ includeFile("../partials/header", it) %>
+      <section class="page-intro">
+        <p class="eyebrow">documentation / getting started</p>
+        <h1>Installation</h1>
+        <p class="lede">Build Ashplug from source, initialize its configuration, and connect it to an AI provider. The commands below are taken from the project documentation.</p>
+      </section>
+
+      <div class="docs-layout">
+        <aside class="docs-index" aria-label="On this page">
+          <span>on this page</span>
+          <a href="#requirements">requirements</a>
+          <a href="#install">install</a>
+          <a href="#configure">configure</a>
+          <a href="#first-task">first task</a>
+          <a href="#troubleshooting">troubleshooting</a>
+        </aside>
+        <div class="docs-content">
+          <section id="requirements" class="docs-section">
+            <p class="section-number">01</p>
+            <h2>Requirements</h2>
+            <ul class="check-list">
+              <li>Rust stable 1.85 or newer and Cargo.</li>
+              <li>Bash or Zsh for shell integration.</li>
+              <li>An OpenAI-compatible endpoint, a local Ollama server, or the mock provider.</li>
+              <li>Linux is the only platform with a documented Bubblewrap sandbox backend. macOS has the normal executor; Windows support is not documented.</li>
+            </ul>
+          </section>
+
+          <section id="install" class="docs-section">
+            <p class="section-number">02</p>
+            <h2>Install from source</h2>
+            <p>Clone the repository, enter the checkout, and install the binary with Cargo.</p>
+            <div class="code-block">
+              <div class="code-header"><span>terminal</span><button type="button" data-copy-code="git clone https://github.com/XenVen/ashplug.git\ncd ashplug\ncargo install --path ." aria-label="Copy source installation commands">copy</button></div>
+              <pre><code>git clone https://github.com/XenVen/ashplug.git
+cd ashplug
+cargo install --path .</code></pre>
+            </div>
+            <p class="note"><strong>Repository note:</strong> the application documentation currently uses <code>XenVen/ashplug</code>; the active Git remote is <code>Ashplug/ashplug</code>. Confirm the canonical clone URL before publishing an installation link.</p>
+            <div class="code-block">
+              <div class="code-header"><span>verify</span><button type="button" data-copy-code="ashplug --version\nashplug config init" aria-label="Copy verification commands">copy</button></div>
+              <pre><code>ashplug --version
+ashplug config init</code></pre>
+            </div>
+          </section>
+
+          <section id="configure" class="docs-section">
+            <p class="section-number">03</p>
+            <h2>Initial configuration</h2>
+            <p><code>config init</code> writes a default TOML file. Inspect the effective configuration or its resolved path with:</p>
+            <div class="code-block">
+              <div class="code-header"><span>configuration</span><button type="button" data-copy-code="ashplug config show\nashplug config path" aria-label="Copy configuration commands">copy</button></div>
+              <pre><code>ashplug config show
+ashplug config path</code></pre>
+            </div>
+            <p>The default provider is OpenAI-compatible. Its API key is read from the environment variable named by <code>api_key_env</code>; the default name is <code>OPENAI_API_KEY</code>.</p>
+            <div class="code-block">
+              <div class="code-header"><span>openai-compatible provider</span><button type="button" data-copy-code="export OPENAI_API_KEY=&quot;…&quot;" aria-label="Copy provider environment command">copy</button></div>
+              <pre><code>export OPENAI_API_KEY="…"</code></pre>
+            </div>
+            <p>For a local Ollama server, set <code>provider = "ollama"</code>, the local base URL, and a model in the TOML configuration. For offline development, use the mock provider documented below.</p>
+          </section>
+
+          <section id="first-task" class="docs-section">
+            <p class="section-number">04</p>
+            <h2>Run a first task</h2>
+            <p>Use the mock provider for a deterministic, offline check. This is the same safe workflow used in the homepage demonstration.</p>
+            <div class="code-block">
+              <div class="code-header"><span>offline check</span><button type="button" data-copy-code="ASHPLUG_MOCK_RESPONSE='{\"summary\":\"Print a safe greeting\",\"steps\":[{\"description\":\"Print a safe greeting\",\"command\":{\"program\":\"echo\",\"args\":[\"ashplug demo\"]}}]}' ashplug --provider mock --no-history \"show a safe greeting\"" aria-label="Copy first task command">copy</button></div>
+              <pre><code>ASHPLUG_MOCK_RESPONSE='{"summary":"Print a safe greeting","steps":[{"description":"Print a safe greeting","command":{"program":"echo","args":["ashplug demo"]}}]}' \
+  ashplug --provider mock --no-history "show a safe greeting"</code></pre>
+            </div>
+            <p>Use <code>--plan</code> when you want Ashplug to produce and evaluate a plan without executing it. Use <code>--yes</code> to approve every command the safety policy permits for one invocation.</p>
+          </section>
+
+          <section id="shell" class="docs-section">
+            <p class="section-number">05</p>
+            <h2>Shell integration</h2>
+            <p>Print and source the integration script. The documented setup is additive and does not overwrite existing shell configuration.</p>
+            <div class="code-block">
+              <div class="code-header"><span>bash</span><button type="button" data-copy-code="ashplug init bash > /tmp/ashplug.bash\nsource /tmp/ashplug.bash" aria-label="Copy Bash setup commands">copy</button></div>
+              <pre><code>ashplug init bash &gt; /tmp/ashplug.bash
+source /tmp/ashplug.bash</code></pre>
+            </div>
+            <p>For Zsh, replace <code>bash</code> with <code>zsh</code>. To make the integration persistent, add the corresponding <code>eval "$(ashplug init bash)"</code> or Zsh line to the appropriate startup file.</p>
+          </section>
+
+          <section id="troubleshooting" class="docs-section">
+            <p class="section-number">06</p>
+            <h2>Updating and troubleshooting</h2>
+            <p>There is no release updater or uninstall workflow documented by the project. When building from a checkout, update the checkout using your normal Git workflow and rerun the documented Cargo install command. If installed with Cargo, Cargo’s standard uninstall command is:</p>
+            <div class="code-block">
+              <div class="code-header"><span>remove Cargo installation</span><button type="button" data-copy-code="cargo uninstall ashplug" aria-label="Copy uninstall command">copy</button></div>
+              <pre><code>cargo uninstall ashplug</code></pre>
+            </div>
+            <div class="troubleshooting-list">
+              <div><strong>Provider error</strong><span>Check the configured provider, endpoint, model, and API-key environment variable. The mock provider avoids network access.</span></div>
+              <div><strong>Command denied</strong><span>Review the safety decision. Unknown, privileged, shell-interpreter, and invalid commands are denied by default.</span></div>
+              <div><strong>Shell hook unavailable</strong><span>Confirm the binary is on <code>PATH</code>, source the generated script again, and check that Bash or Zsh is being used.</span></div>
+            </div>
+          </section>
+        </div>
+      </div>
+<%~ includeFile("../partials/footer", it) %>

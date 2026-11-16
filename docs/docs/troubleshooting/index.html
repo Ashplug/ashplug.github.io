@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Troubleshooting for the Ashplug AI-powered shell assistant.">
+    <title>Troubleshooting · Ashplug</title>
+    <script>
+      (() => {
+        const saved = localStorage.getItem("ashplug-theme");
+        const system = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = saved || system;
+      })();
+    </script>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/site.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/" aria-label="Ashplug home">
+          <img src="/assets/ashplug-navbar.svg" alt="Ashplug" class="h-8 w-auto">
+        </a>
+        <button type="button" class="menu-button rounded border border-[var(--border)] px-3 py-2 text-xs text-[var(--text-muted)] md:hidden" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">
+          menu
+        </button>
+        <div class="site-nav-links hidden items-center gap-6 text-xs md:flex">
+          <a class="nav-link" href="/installation/">installation</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">github ↗</a>
+          <button type="button" class="nav-link" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+            theme: <span data-theme-label>light</span>
+          </button>
+        </div>
+      </nav>
+      <div id="mobile-menu" class="mobile-menu border-b border-[var(--border)] py-4 md:hidden" data-mobile-menu hidden>
+        <div class="flex flex-col gap-4 text-xs">
+          <a class="nav-link" href="/installation/">installation</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">github ↗</a>
+          <button type="button" class="nav-link text-left" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+            theme: <span data-theme-label>light</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="docs-page">
+        <button type="button" class="docs-mobile-toggle" data-docs-toggle aria-expanded="false" aria-controls="docs-sidebar">contents</button>
+        <aside id="docs-sidebar" class="docs-index docs-sidebar" data-docs-sidebar>
+          <p class="docs-kicker">documentation</p>
+          <a href="/docs/" class="">Introduction</a>
+          <a href="/docs/installation/" class="">Installation</a>
+          <a href="/docs/configuration/" class="">Configuration</a>
+          <a href="/docs/commands/" class="">Commands</a>
+          <a href="/docs/providers/" class="">AI providers</a>
+          <a href="/docs/architecture/" class="">Architecture</a>
+          <a href="/docs/security/" class="">Security model</a>
+          <a href="/docs/troubleshooting/" class="current">Troubleshooting</a>
+        </aside>
+        <article class="doc-article">
+          <p class="breadcrumbs"><a href="/">home</a><span>/</span><a href="/docs/">docs</a><span>/</span><span>Troubleshooting</span></p>
+<p class="eyebrow">documentation / troubleshooting</p>
+<h1>Troubleshooting</h1>
+<p class="doc-lede">Use the diagnostics below to distinguish configuration, provider, policy, and shell integration issues.</p>
+<h2>Provider errors</h2><p>Check <code>ai.provider</code>, the endpoint, model, timeout, and the environment variable named by <code>api_key_env</code>. Use <code>--provider mock</code> to remove network and credential variables from an offline test.</p>
+<h2>Safety denial</h2><p>A denial is expected for unknown, privileged, shell-interpreter, or invalid commands. Review the reason printed with the plan; changing a policy setting lowers the security posture and does not bypass command validation.</p>
+<h2>Shell integration</h2><p>Confirm <code>ashplug</code> is on <code>PATH</code>, source the generated Bash or Zsh script again, and check the shell-specific startup file. The hook returns status 127 when the binary is unavailable and protects against recursion.</p>
+<h2>History</h2><p>History is enabled by default and stored in SQLite. Use <code>--no-history</code> for an invocation that should remain ephemeral, or disable persistence in the <code>[history]</code> section.</p>
+          <nav class="doc-pager" aria-label="Documentation pagination">
+            <a href="/docs/security/"><span>← previous</span><strong>Security model</strong></a>                      </nav>
+        </article>
+      </div>
+    </main>
+    <footer class="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+      <div class="grid gap-10 border-b border-[var(--border)] pb-10 sm:grid-cols-[1.5fr_1fr_1fr]">
+        <div>
+          <img src="/assets/ashplug-navbar.svg" alt="Ashplug" class="h-7 w-auto">
+          <p class="mt-4 max-w-xs text-xs leading-6 text-[var(--text-muted)]">An AI-powered shell companion for natural language, controlled execution, and provider independence.</p>
+        </div>
+        <div>
+          <p class="mb-4 text-xs text-[var(--text)]">navigate</p>
+          <div class="flex flex-col gap-3 text-xs">
+            <a class="nav-link" href="/installation/">installation</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          </div>
+        </div>
+        <div>
+          <p class="mb-4 text-xs text-[var(--text)]">project</p>
+          <div class="flex flex-col gap-3 text-xs">
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">GitHub ↗</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/blob/main/CONTRIBUTING.md" rel="noreferrer">contributing ↗</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/blob/main/SECURITY.md" rel="noreferrer">security ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 pt-6 text-xs text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <span>open source software · built with Rust</span>
+        <span>© 2026 Ashplug</span>
+      </div>
+    </footer>
+    <script src="/assets/site.js" defer></script>
+  </body>
+</html>

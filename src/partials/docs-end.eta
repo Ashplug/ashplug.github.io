@@ -1,0 +1,6 @@
+          <nav class="doc-pager" aria-label="Documentation pagination">
+            <% if (it.previous) { %><a href="<%= it.previous.href %>"><span>← previous</span><strong><%= it.previous.label %></strong></a><% } else { %><span></span><% } %>
+            <% if (it.next) { %><a class="next" href="<%= it.next.href %>"><span>next →</span><strong><%= it.next.label %></strong></a><% } %>
+          </nav>
+        </article>
+      </div>

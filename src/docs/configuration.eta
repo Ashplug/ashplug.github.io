@@ -1,0 +1,12 @@
+<p class="eyebrow">documentation / configuration</p>
+<h1>Configuration</h1>
+<p class="doc-lede">Ashplug reads TOML configuration and applies environment overrides before validating the effective settings.</p>
+<h2>Configuration location</h2>
+<p>Resolution order is explicit CLI path, <code>ASHPLUG_CONFIG</code>, <code>$XDG_CONFIG_HOME/ashplug/config.toml</code>, then <code>~/.config/ashplug/config.toml</code>. A missing file uses built-in defaults.</p>
+<div class="code-block"><div class="code-header"><span>inspect configuration</span><button type="button" data-copy-code="ashplug config init\nashplug config show\nashplug config path">copy</button></div><pre><code>ashplug config init
+ashplug config show
+ashplug config path</code></pre></div>
+<h2>Important sections</h2>
+<div class="doc-table"><div><b>[ai]</b><span>provider, base_url, model, API-key environment variable, timeout, retries, and fallback provider.</span></div><div><b>[execution]</b><span>mode, step limit, command timeout, output limit, working directory, and optional Linux sandbox.</span></div><div><b>[safety]</b><span>privileged/interpreter policy, write approval, unknown command policy, and allowed write roots.</span></div><div><b>[history]</b><span>SQLite persistence toggle and database path.</span></div></div>
+<h2>Execution modes</h2>
+<p><code>hybrid</code> runs read-only commands automatically and asks for approval for writes. <code>plan_only</code> evaluates without executing. <code>automatic</code> approves commands permitted by safety policy.</p>

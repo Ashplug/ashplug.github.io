@@ -1,0 +1,31 @@
+    </main>
+    <footer class="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+      <div class="grid gap-10 border-b border-[var(--border)] pb-10 sm:grid-cols-[1.5fr_1fr_1fr]">
+        <div>
+          <img src="/assets/ashplug-navbar.svg" alt="Ashplug" class="h-7 w-auto">
+          <p class="mt-4 max-w-xs text-xs leading-6 text-[var(--text-muted)]">An AI-powered shell companion for natural language, controlled execution, and provider independence.</p>
+        </div>
+        <div>
+          <p class="mb-4 text-xs text-[var(--text)]">navigate</p>
+          <div class="flex flex-col gap-3 text-xs">
+            <a class="nav-link" href="/installation/">installation</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/tree/main/docs" rel="noreferrer">documentation ↗</a>
+          </div>
+        </div>
+        <div>
+          <p class="mb-4 text-xs text-[var(--text)]">project</p>
+          <div class="flex flex-col gap-3 text-xs">
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug" rel="noreferrer">GitHub ↗</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/blob/main/CONTRIBUTING.md" rel="noreferrer">contributing ↗</a>
+            <a class="nav-link" href="https://github.com/Ashplug/ashplug/blob/main/SECURITY.md" rel="noreferrer">security ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 pt-6 text-xs text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <span>open source software · built with Rust</span>
+        <span>© 2026 Ashplug</span>
+      </div>
+    </footer>
+    <script src="/assets/site.js" defer></script>
+  </body>
+</html>
