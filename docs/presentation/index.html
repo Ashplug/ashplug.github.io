@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#05090d">
+    <meta name="description" content="Meet ASHPLUG: a provider-independent AI shell assistant with structured plans and safety-controlled execution.">
+    <title>ASHPLUG — AI, with a shell boundary</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/SpaceGrotesk-Variable.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="assets/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
+    <link rel="stylesheet" href="presentation.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section class="cover" data-background="#05090d">
+          <div class="cover-copy">
+            <img class="brand-logo" src="assets/ashplug-logo.svg" alt="ASHPLUG">
+            <p class="eyebrow">AI · SHELL · INTENT · EXTENSION</p>
+            <h1>AI, with<br><span>a shell boundary.</span></h1>
+            <p class="lede">Natural language in. Structured commands out.<br>Safety stays in control.</p>
+            <div class="cover-command"><span class="prompt">$</span> ashplug "find the five largest files here"</div>
+            <p class="cover-foot">A focused AI shell assistant · Rust-powered · Provider-independent</p>
+          </div>
+          <div class="cover-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="core"><img src="assets/ashplug-mark.svg" alt=""></div>
+            <span class="orbit-label label-model">MODEL<br><small>proposes</small></span>
+            <span class="orbit-label label-policy">POLICY<br><small>decides</small></span>
+            <span class="orbit-label label-shell">SHELL<br><small>executes</small></span>
+          </div>
+          <aside class="notes">Open with the short version: ASHPLUG turns natural-language shell intent into commands, but the model is not given unrestricted shell control. Its name expands to AI SHell PLUGin.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">01 / THE PROBLEM</p>
+          <h2>Getting from intent<br>to a safe command is hard.</h2>
+          <div class="three-cards">
+            <article class="card"><span class="card-index">01</span><h3>Remembering syntax</h3><p>Flags, quoting, pipelines, and paths turn a simple goal into a command-line puzzle.</p></article>
+            <article class="card"><span class="card-index">02</span><h3>Trusting generated commands</h3><p>A plausible command can still have surprising effects when it runs with your permissions.</p></article>
+            <article class="card"><span class="card-index">03</span><h3>Keeping control</h3><p>Convenience should not mean giving a model an unrestricted route to your shell.</p></article>
+          </div>
+          <p class="bottom-line"><span class="accent">ASHPLUG’s answer:</span> make planning useful—and execution explicit, bounded, and inspectable.</p>
+          <aside class="notes">Frame the need: users know what they want, but not always the exact command. The challenge is not just generating syntax; it is controlling what happens next.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">02 / WHAT IT IS</p>
+          <div class="split">
+            <div><h2>A natural-language<br>interface for the OS.</h2>
+              <p class="lede">ASHPLUG is a focused Rust CLI and shell integration. Give it a task; it asks an AI provider for a structured plan, checks each proposed command, then runs only what policy allows.</p>
+              <div class="tag-row"><span>Rust CLI</span><span>Bash</span><span>Zsh</span><span>OpenAI-compatible</span><span>Ollama</span></div>
+            </div>
+            <div class="terminal">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>request → result</span></div>
+              <pre><code><b>$</b> ashplug "show the largest files here"
+
+Plan
+  Find files and sort by size
+
+Safety
+  find  <em>allow</em>
+  sort  <em>allow</em>
+
+Result
+  1. ./archive.tar.gz    842 MB
+  2. ./database.dump     317 MB
+  3. ./video.mp4         208 MB</code></pre>
+              <p class="terminal-caption">Illustrative example · exact plan depends on provider and environment</p>
+            </div>
+          </div>
+          <aside class="notes">Emphasize what ASHPLUG is and is not: a shell-task assistant, not a general coding agent and not a replacement shell.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">03 / THE KEY DISTINCTION</p>
+          <h2>The AI proposes.<br><span class="accent">ASHPLUG decides.</span></h2>
+          <div class="trust-flow">
+            <div class="trust-node model"><span class="node-kicker">AI PROVIDER</span><strong>Proposes</strong><small>Structured plan</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="trust-node ashplug"><span class="node-kicker">RUST CONTROL PLANE</span><strong>Validates · classifies · approves</strong><small>Policy cannot be changed by the model</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="trust-node os"><span class="node-kicker">OPERATING SYSTEM</span><strong>Executes</strong><small>One command at a time</small></div>
+          </div>
+          <div class="callout"><span class="callout-mark">!</span><p>Model output is untrusted input. It must become a typed plan and pass the safety engine before execution.</p></div>
+          <aside class="notes">This is the central message of the presentation. The provider does not execute commands, inspect the filesystem, or make safety decisions. Rust owns those steps.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">04 / REQUEST LIFECYCLE</p>
+          <h2>From a sentence<br>to a recorded outcome.</h2>
+          <div class="lifecycle">
+            <div><b>01</b><span><strong>Request</strong><small>CLI or Bash/Zsh hook</small></span></div>
+            <div><b>02</b><span><strong>Plan</strong><small>Provider returns structured JSON</small></span></div>
+            <div><b>03</b><span><strong>Validate</strong><small>Parse types, enforce bounds</small></span></div>
+            <div><b>04</b><span><strong>Assess</strong><small>Allow · approval · deny</small></span></div>
+            <div><b>05</b><span><strong>Execute</strong><small>Direct process, timeout, bounded output</small></span></div>
+            <div><b>06</b><span><strong>Learn</strong><small>Record results; replan if needed</small></span></div>
+          </div>
+          <p class="micro-copy">Replanning is bounded. Failed commands can produce observations for a revised plan—but never bypass safety checks.</p>
+          <aside class="notes">Walk left-to-right. On a failure, bounded output excerpts can be included in the next provider request to help recover. Every new command still goes through the same validation and policy.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">05 / PLANNING + PROVIDERS</p>
+          <h2>Bring a model.<br>Keep the workflow.</h2>
+          <div class="provider-layout">
+            <div class="provider-list">
+              <div class="provider"><span class="provider-icon">01</span><div><strong>OpenAI-compatible</strong><small>Remote APIs and compatible endpoints</small></div><b>HTTP</b></div>
+              <div class="provider"><span class="provider-icon">02</span><div><strong>Ollama</strong><small>Connect to a local Ollama server</small></div><b>LOCAL</b></div>
+              <div class="provider"><span class="provider-icon">03</span><div><strong>Mock</strong><small>Deterministic responses for tests and demos</small></div><b>OFFLINE</b></div>
+            </div>
+            <div class="provider-flow">
+              <span>Your task</span><i>→</i><span>Planner prompt</span><i>→</i><span>Provider</span><i>→</i><span>JSON plan</span>
+              <hr>
+              <p>Configurable model, endpoint, timeout, retries, and optional secondary-provider fallback.</p>
+              <p class="micro-copy">The planner validates the plan; provider choice does not change the safety policy.</p>
+            </div>
+          </div>
+          <aside class="notes">Provider independence is an architectural seam, not a claim that every provider or model behaves identically. The mock provider allows ordinary tests without live API access.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">06 / FEATURE 01 — STRUCTURED PLANS</p>
+          <h2>Not a blob of shell text.</h2>
+          <div class="code-compare">
+            <div class="code-panel muted"><span class="panel-label">FREE-FORM COMMAND STRING</span><pre><code>"find . -type f ... | xargs ..."</code></pre><p>Harder to inspect safely as data.</p></div>
+            <div class="compare-chevron">→</div>
+            <div class="code-panel good"><span class="panel-label">ASHPLUG COMMAND SPEC</span><pre><code>{
+  "program": "find",
+  "args": ["./", "-type", "f"]
+}</code></pre><p>Typed fields. Bounded plan. Safety-checked before use.</p></div>
+          </div>
+          <div class="feature-points"><span>JSON plan parsing</span><span>Step and argument limits</span><span>Malformed-plan correction</span><span>Validation stays separate from permission</span></div>
+          <aside class="notes">A well-formed plan is not automatically an allowed plan. Parsing checks shape and size; the safety engine separately decides whether each command is permitted.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">07 / FEATURE 02 — SAFETY POLICY</p>
+          <h2>Three outcomes.<br>No hidden “probably fine.”</h2>
+          <div class="decision-grid">
+            <article class="decision-card allow"><span>01 / LOW RISK</span><h3>ALLOW</h3><p>Positively classified read-only commands may run without prompting.</p></article>
+            <article class="decision-card approve"><span>02 / USER CHOICE</span><h3>ASK</h3><p>Writes, deletion, and network operations generally require approval.</p></article>
+            <article class="decision-card deny"><span>03 / POLICY STOP</span><h3>DENY</h3><p>Unknown commands, privileged operations, and shell interpreters are denied by default.</p></article>
+          </div>
+          <p class="micro-copy">The model cannot approve itself, change policy, or skip this decision point.</p>
+          <aside class="notes">Use “default policy” language. Exact classifications are static and configurable in some areas. Do not imply the policy understands every program’s runtime behavior.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">08 / FEATURE 03 — EXECUTION</p>
+          <h2>Direct process execution.<br>With operational bounds.</h2>
+          <div class="execution-row">
+            <div class="exec-block"><span>PROGRAM</span><strong>find</strong></div><div class="exec-plus">+</div>
+            <div class="exec-block"><span>ARGUMENTS</span><strong>[".", "-type", "f"]</strong></div>
+            <div class="exec-arrow">→</div>
+            <div class="exec-block result"><span>PROCESS RESULT</span><strong>exit + output</strong></div>
+          </div>
+          <div class="three-pills"><span>Per-command timeout</span><span>Bounded stdout / stderr capture</span><span>Process cleanup on timeout*</span></div>
+          <p class="footnote">*Cleanup behavior varies by platform; timeouts are not full process or resource containment.</p>
+          <aside class="notes">ASHPLUG does not execute the model's command string via sh -c, bash -c, or eval. The executor receives a program and argument vector. Explain the timeout as a practical bound, not a sandbox.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">09 / FEATURE 04 — SHELL INTEGRATION</p>
+          <h2>It fits the shell.<br>It doesn’t replace it.</h2>
+          <div class="shell-layout">
+            <div class="shell-terminal">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>bash / zsh</span></div>
+              <pre><code><b>$</b> ask find large files
+
+<b>$</b> ashplug "organize downloads"
+
+<b>$</b> ashpulg
+  ↳ command not found
+  ↳ forwarded to ashplug</code></pre>
+            </div>
+            <div class="shell-explainer">
+              <p><b>Known commands?</b><br>They continue through normal shell lookup.</p>
+              <p><b>Unknown command?</b><br>Optional Bash/Zsh hook forwards it to ASHPLUG.</p>
+              <p><b>Model output?</b><br>The shell never evaluates it. Rust handles execution.</p>
+            </div>
+          </div>
+          <p class="micro-copy">Integration is additive; install or remove it with a shell startup-file line.</p>
+          <aside class="notes">The intentional typo in the demo illustrates the command-not-found path. The explicit ask function is the clearest way to issue natural-language requests. Existing commands are not intercepted.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">10 / FEATURE 05 — CONFIGURATION + HISTORY</p>
+          <h2>Your provider. Your policy.<br>A reviewable trail.</h2>
+          <div class="two-panels">
+            <article class="feature-panel">
+              <div class="panel-symbol">[=]</div><h3>Configuration</h3>
+              <ul><li>TOML file with defaults</li><li>Environment and CLI overrides</li><li>Execution mode and step limits</li><li>Optional write boundaries / Linux sandbox</li></ul>
+              <code>ashplug config init</code>
+            </article>
+            <article class="feature-panel">
+              <div class="panel-symbol">[#]</div><h3>Execution history</h3>
+              <ul><li>SQLite session records</li><li>Commands and safety decisions</li><li>Approval, status, and captured output</li><li>List, inspect, clear, or disable history</li></ul>
+              <code>ashplug history list</code>
+            </article>
+          </div>
+          <p class="footnote">History can contain sensitive command output. Disable it for sensitive tasks or use <code>--no-history</code>.</p>
+          <aside class="notes">History supports transparency and review. It is not automatically a privacy guarantee: captured command output can be sensitive, and users should disable it where appropriate.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">11 / WHAT MAKES IT DIFFERENT</p>
+          <h2>A focused command lane<br>alongside agent harnesses.</h2>
+          <div class="comparison">
+            <div class="comparison-head"><span>QUESTION</span><span>ASHPLUG</span><span>GENERAL CODING AGENT / TERMINAL</span></div>
+            <div><span>Primary job</span><b>Natural-language OS commands</b><p>Codebase and multi-step development work</p></div>
+            <div><span>Execution path</span><b>Typed command → policy → executor</b><p>Depends on agent and configured tools</p></div>
+            <div><span>Entry point</span><b>CLI + Bash/Zsh command-not-found</b><p>Agent app, IDE, CLI, or integrated terminal</p></div>
+            <div><span>Provider posture</span><b>OpenAI-compatible, Ollama, mock</b><p>Varies by product and deployment</p></div>
+            <div><span>Best fit</span><b>Focused shell intent</b><p>Broader coding and agent workflows</p></div>
+          </div>
+          <p class="micro-copy">This is a scope comparison—not a claim that every competing terminal behaves the same.</p>
+          <aside class="notes">Keep this fair. Claude Code, Codex, and OpenCode are broader tools whose terminal access is one capability. Their details vary by product, release, and configuration. ASHPLUG focuses on the shell command path.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">12 / WHY CHOOSE ASHPLUG FOR THIS JOB?</p>
+          <h2>Small surface area.<br>Clear command ownership.</h2>
+          <div class="reason-grid">
+            <div><b>01</b><strong>Purpose-built</strong><p>Natural-language intent maps to operating-system commands.</p></div>
+            <div><b>02</b><strong>Policy is in the loop</strong><p>Approval and denial are explicit stages, not model instructions.</p></div>
+            <div><b>03</b><strong>Inspectable by design</strong><p>Structured plans, safety decisions, outputs, and history can be reviewed.</p></div>
+            <div><b>04</b><strong>Provider-flexible</strong><p>Choose a remote-compatible endpoint or local Ollama.</p></div>
+            <div><b>05</b><strong>Works where you type</strong><p>CLI, Bash, and Zsh entry points keep the workflow close to the shell.</p></div>
+            <div><b>06</b><strong>Complements coding agents</strong><p>Use the right tool for command tasks; keep broader agents for broader work.</p></div>
+          </div>
+          <aside class="notes">These are reasons to choose it for the shell-task use case, not a blanket ranking of products. “Better” depends on the job and the security requirements.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">13 / HONEST LIMITS</p>
+          <h2>Safety is a design goal.<br>Not a magic shield.</h2>
+          <div class="limits">
+            <div><span>01</span><p>Static command classification cannot model every program, option, plugin, environment, or runtime effect.</p></div>
+            <div><span>02</span><p>Optional Bubblewrap isolation is currently Linux-specific and disabled by default.</p></div>
+            <div><span>03</span><p>Timeouts and bounded output are operational controls—not complete containment or resource quotas.</p></div>
+            <div><span>04</span><p>Recovery may send prior command-output excerpts to the configured provider.</p></div>
+            <div><span>05</span><p>History stores captured output unless history is disabled.</p></div>
+          </div>
+          <p class="closing-caveat">Use an OS sandbox or container for hostile workloads. Understand what data reaches your provider.</p>
+          <aside class="notes">Being candid about limitations improves trust. The safety engine reduces risk but is not a complete isolation boundary; the repository documents its threat model and platform differences.</aside>
+        </section>
+
+        <section>
+          <p class="eyebrow">14 / LIVE DEMO</p>
+          <h2>See the boundary<br>before the command runs.</h2>
+          <div class="demo-steps">
+            <div><b>01</b><code>ashplug plan "find the five largest files here"</code><span>Inspect the proposed plan and decisions.</span></div>
+            <div><b>02</b><code>ashplug "find the five largest files here"</code><span>Run a read-only request.</span></div>
+            <div><b>03</b><code>ashplug "create a folder called reports"</code><span>Show an approval-required operation.</span></div>
+            <div><b>04</b><code>ashplug history list</code><span>Review the recorded session.</span></div>
+          </div>
+          <p class="micro-copy">Use a disposable working directory for demos. A mock provider is available for controlled examples.</p>
+          <aside class="notes">Demo in a temporary directory. For a no-network demo, configure the mock provider with a known JSON plan. Review the proposed plan before executing any write operation.</aside>
+        </section>
+
+        <section class="final-slide" data-background="#05090d">
+          <img class="brand-logo final-logo" src="assets/ashplug-logo.svg" alt="ASHPLUG">
+          <p class="eyebrow">THE TAKEAWAY</p>
+          <h2>Natural language<br><span>in.</span> Controlled commands<br><span>out.</span></h2>
+          <p class="final-rule">The AI proposes. The user and policy stay in control.</p>
+          <div class="final-links"><a href="https://ashplug.com/">ashplug.com</a><span>·</span><a href="https://github.com/Ashplug/ashplug">github.com/Ashplug/ashplug</a></div>
+          <aside class="notes">Close with the core distinction. ASHPLUG is a focused shell assistant—not a replacement for general coding agents, and not a claim of risk-free execution.</aside>
+        </section>
+      </div>
+    </div>
+    <div class="deck-brand" aria-hidden="true"><img src="assets/ashplug-mark.svg" alt=""><span>ASHPLUG</span></div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        slideNumber: "c/t",
+        showSlideNumber: "all",
+        center: false,
+        transition: "fade",
+        backgroundTransition: "fade",
+        width: 1280,
+        height: 720,
+        margin: 0.06,
+        minScale: 0.2,
+        maxScale: 1.6,
+        pdfSeparateFragments: false
+      });
+    </script>
+  </body>
+</html>
